@@ -1,5 +1,3 @@
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileReader;
@@ -11,43 +9,36 @@ import java.util.List;
 
 public class main {
     public static void main(String[] args) throws IOException {
+        //The current only file we have.
+        String csvFile = "user_1.csv";
+        //A test user using the basic User class
+        User testUser = new User("John", "Doe", "jdoe1", "password", "jdoe1@email.com", "Intern", 100.00);
 
-        //Check to see if the file exists before trying to create a new one (NOT WORKING YET)
-        /*
-        if("sheet_1.csv".exists())
-        */
+        //The csv file writer.
+        FileWriter csvWriter_user_1 = new FileWriter(csvFile, true);
 
-        FileWriter csvWriter = new FileWriter("sheet_1.csv");
-        add_col(csvWriter, "Employee Name");
-        csvWriter.close();
+        addUser(csvWriter_user_1, testUser);
+
+        csvWriter_user_1.close();
 
     }
-    public static void updateCSV(String fileToUpdate, String replace,
-                                 int row, int col) throws IOException {
 
-        File inputFile = new File(fileToUpdate);
-
-// Read existing file
-        CSVReader reader = new CSVReader(new FileReader(inputFile), ',');
-        List<String[]> csvBody = reader.readAll();
-// get CSV row column  and replace with by using row and column
-        csvBody.get(row)[col] = replace;
-        reader.close();
-
-// Write to CSV file which is open
-        CSVWriter writer = new CSVWriter(new FileWriter(inputFile), ',');
-        writer.writeAll(csvBody);
-        writer.flush();
-        writer.close();
-    }
-    public static void add_col(FileWriter csvWriter, String col_name) throws IOException {
-        csvWriter.append(col_name);
+//AddCol() function not working.
+    public static void addCol(FileWriter csvWriter, String colName) throws IOException {
         csvWriter.append(",");
+        csvWriter.append(colName);
         return;
     }
-    public static void add_item(FileWriter csvWriter, String col_name) throws IOException {
-        csvWriter.append(col_name);
-        csvWriter.append(",");
+    public static void addUser(FileWriter csvWriter, User newUser) throws IOException {
+        csvWriter.write(newUser.getFirstName() + "," +
+                newUser.getLastName() + "," +
+                newUser.getUsername() + "," +
+                newUser.getPassword() + "," +
+                newUser.getEmail() + "," +
+                newUser.getRole() + "," +
+                newUser.getSalary() + ",");
+        csvWriter.write("\n");
+        System.out.println("User added successfully.");
         return;
     }
 
