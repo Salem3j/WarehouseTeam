@@ -1,4 +1,4 @@
 First Name,Last Name,Username,Password,Email,Role,Salary
-John,Doe,jdoe1,password,jdoe1@email.com,Intern,100.0,
-John,Doe,jdoe1,password,jdoe1@email.com,Intern,100.0,
-bob,mcbob,mcbob1,password,mcbob1@email.com,Intern,200.0,
+John,Doe,jdoe1,password,jdoe1@email.com,Intern,100.0
+bob,mcbob,mcbob1,password,mcbob1@email.com,Intern,200.0
+Mary,Sue,sue1,password,marysue@email.com,HR,20000.0
