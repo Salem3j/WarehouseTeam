@@ -10,6 +10,8 @@ public class main {
         String csvFile_UserFile = "user_1.csv";
         //A test user using the basic User class
         User testUser = new User("John", "Doe", "jdoe1", "password", "jdoe1@email.com", "Intern", 100.00);
+        String listOfTables = "Users";
+        String commandList = "(Add User, Log Out, Print Table, Find Row, Help)";
 
         boolean running = true;
         boolean logged_in = false;
@@ -24,7 +26,7 @@ public class main {
                 System.out.println("Enter Your Password: ");
                 session_password = scanner.nextLine();
 
-                if (findInFile(session_username, csvFile_UserFile) && findInFile(session_password, csvFile_UserFile)) {
+                if (findInFile(session_username, csvFile_UserFile) && findInFile(session_password, csvFile_UserFile) ) {
                     System.out.println("Welcome to the Warehouse Management System.");
                     logged_in = true;
                 }else{
@@ -34,13 +36,48 @@ public class main {
                     break;
                 }
             }
-            System.out.println("Please select an action(Add User, Log Out):");
+            System.out.println("Please select a command" + commandList + ": ");
             user_action = scanner.nextLine();
             if (user_action.equals("Add User")) {
                 addUser(scanner, csvFile_UserFile);
-            } else if (user_action.equals("Log Out")) {
+            }
+            else if (user_action.equals("Print Table")) {
+                System.out.println("Which table would you like to print: " + listOfTables);
+                user_action = scanner.nextLine();
+                if(user_action.equals("Users")){
+                    printTable(csvFile_UserFile);
+                }else{
+                    System.out.println("Sorry, that table does not seem to exist. Returning to menu.");
+                }
+            }
+            else if (user_action.equals("Find Row")) {
+                System.out.println("Enter target value: ");
+                user_action = scanner.nextLine();
+                printRow(user_action, csvFile_UserFile);
+            }
+            else if (user_action.equals("Help")) {
+                System.out.println("Enter command name for more information" + commandList + ": ");
+                user_action = scanner.nextLine();
+                if (user_action.equals("Add User")) {
+                    System.out.println("Prompts the user for a new user's details to add to the User table.");
+                }
+                else if (user_action.equals("Print Table")) {
+                    System.out.println("Prints out the table that the user provides the name of.");
+                }
+                else if (user_action.equals("Find Row")) {
+                    System.out.println("Finds all rows with the target value in it.");
+                }
+                else if (user_action.equals("Log Out")){
+                    System.out.println("Logs the user out.");
+                }
+                else{
+                    System.out.println("Command name not recognized. Returning to menu.");
+                }
+            }
+            else if (user_action.equals("Log Out")) {
                 running = false;
-            } else {
+            }
+            else {
                 System.out.println("Command not recognized. Please try again.");
             }
         }
@@ -54,13 +91,6 @@ public class main {
         //Adding a user to the users table
         UserTableManager.addUser("JohnDoe", "john.doe@example.com");
          */
-    }
-
-    //AddCol() function not working.
-    public static void addCol(FileWriter csvWriter, String colName) throws IOException {
-        csvWriter.append(",");
-        csvWriter.append(colName);
-        return;
     }
 
     public static void addUser(Scanner scanner, String csvFile) throws IOException {
@@ -105,8 +135,8 @@ public class main {
             return;
         }
     }
-    public static boolean findInFile(String searchTerm, String fileName) throws FileNotFoundException {
-        Scanner fileInput = new Scanner(new File(fileName));
+    public static boolean findInFile(String searchTerm, String csvFile) throws FileNotFoundException {
+        Scanner fileInput = new Scanner(new File(csvFile));
         String line;
         while(fileInput.hasNextLine()){
             line = fileInput.nextLine().trim();
@@ -129,6 +159,25 @@ public class main {
         }
         return false;
     }
+    public static void printTable(String csvFile) throws FileNotFoundException {
+        //This method prints out an entire csv file.
+        Scanner filePrinterScanner = new Scanner(new File(csvFile));
+        String line;
+        while(filePrinterScanner.hasNextLine()){
+            line = filePrinterScanner.nextLine();
+            System.out.println(line);
+        }
+    }
 
+    public static void printRow(String targetRowValue, String csvFile) throws FileNotFoundException{
+        Scanner rowScanner = new Scanner(new File(csvFile));
+        String line;
+        while(rowScanner.hasNextLine()){
+            line = rowScanner.nextLine();
+            if(line.contains(targetRowValue)){
+                System.out.println(line);
+            }
+        }
+    }
 }
 
