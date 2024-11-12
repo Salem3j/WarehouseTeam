@@ -11,7 +11,7 @@ public class main {
         //A test user using the basic User class
         User testUser = new User("John", "Doe", "jdoe1", "password", "jdoe1@email.com", "Intern", 100.00);
         String listOfTables = "Users";
-        String commandList = "(Add User, Log Out, Print Table, Find Row, Help)";
+        String commandList = "(Add User, Log Out, Print Table, Find Row, Find Column, Help)";
 
         boolean running = true;
         boolean logged_in = false;
@@ -55,6 +55,11 @@ public class main {
                 user_action = scanner.nextLine();
                 printRow(user_action, csvFile_UserFile);
             }
+            else if (user_action.equals("Find Column")){
+                System.out.println("Enter target column name:");
+                user_action = scanner.nextLine();
+                printCol(user_action, csvFile_UserFile);
+            }
             else if (user_action.equals("Help")) {
                 System.out.println("Enter command name for more information" + commandList + ": ");
                 user_action = scanner.nextLine();
@@ -66,6 +71,9 @@ public class main {
                 }
                 else if (user_action.equals("Find Row")) {
                     System.out.println("Finds all rows with the target value in it.");
+                }
+                else if (user_action.equals("Find Column")){
+                    System.out.println("Finds a specific column and prints all information in that column.");
                 }
                 else if (user_action.equals("Log Out")){
                     System.out.println("Logs the user out.");
@@ -177,6 +185,29 @@ public class main {
             if(line.contains(targetRowValue)){
                 System.out.println(line);
             }
+        }
+    }
+    public static void printCol(String targetColValue, String csvFile) throws FileNotFoundException{
+        Scanner colScanner = new Scanner(new File(csvFile));
+        String line = colScanner.nextLine().trim();
+        String[] lineParts = line.split("\\s{0,},\\s{0,}"); // Split on any comma/space situation.
+        int colNum = -1;
+        int fileWidth = lineParts.length;
+        for (int i = 0; i < lineParts.length; i++) {
+            if (lineParts[i].equals(targetColValue)) {
+                colNum = i;
+            }
+        }
+        int rowIterator = 0;
+        if(colNum != -1){
+            while(colScanner.hasNextLine()){
+                line = colScanner.nextLine().trim();
+                lineParts = line.split("\\s{0,},\\s{0,}");
+                System.out.println(lineParts[colNum]);
+            }
+        }
+        else if (colNum == -1) {
+             System.out.println("Column name unrecognized.");
         }
     }
 }
