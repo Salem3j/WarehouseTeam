@@ -8,6 +8,11 @@ public class DatabaseConnection {
     private static final String PASSWORD = "password"; //to be replaced with your database password
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver"); // Explicitly load the MySQL driver
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
     }
+    return DriverManager.getConnection(URL, USER, PASSWORD);
+}
 }
